@@ -1,37 +1,37 @@
 ### JavaScript Best Style Guide NY(c)
 
-#### __1.Объявление переменных__
-В JavaScript теперь есть два дополнительных способа объявления переменных: let и const.
-let является преемником var. Хотя var все еще доступен, let ограничивает
+#### __1. Объявление переменных__
+В JavaScript теперь есть два дополнительных способа объявления переменных: _**let**_ и _**const**_.
+_**let**_ является преемником _**var**_. Хотя _**var**_ все еще доступен, _**let**_ ограничивает
 область переменных в блоке (а не в функции), в котором они объявлены,
 что снижает вероятность ошибки:
 ```javascript
-    // bad
+    //bad
     for (var i = 1; i < 5; i++) {
       console.log(i);
     }
-    // <-- logs the numbers 1 to 4
+    //<-- logs the numbers 1 to 4
     console.log(i);
-    // <-- 5 (variable i still exists outside the loop)
+    //<-- 5 (variable i still exists outside the loop)
     
-    // good
+    //good
     for (let j = 1; j < 5; j++) {
       console.log(j);
     }
     console.log(j);
-    // <-- 'Uncaught ReferenceError: j is not defined'
+    //<-- 'Uncaught ReferenceError: j is not defined'
 ```
-#### __2.Стрелочные функции__
-Стрелочные функции делают синтаксис лаконичным и устраняют некоторые трудности с ним. Отдавайте предпочтение стрелочным функциям, вместо ключевого слова function, особенно для вложенных функций.
+#### __2. Стрелочные функции__
+Стрелочные функции делают синтаксис лаконичным и устраняют некоторые трудности с ним. Отдавайте предпочтение стрелочным функциям, вместо ключевого слова _**function**_, особенно для вложенных функций.
 ```javascript
-    // bad
+    //bad
     var add = function(a, b) {
       return a + b;
     }
-    // good
+    //good
     const add = (a, b) => a + b;
 ```
-#### __3.Улучшенный синтаксис класса__
+#### __3. Улучшенный синтаксис класса__
 Если вы поклонник объектно-ориентированного программирования, вам может понравиться добавление
 классы к языку поверх существующего механизма на основе прототипов.
 Хотя это в основном синтаксический сахар, он обеспечивает более понятный синтаксис для разработчиков.
@@ -46,7 +46,7 @@ let является преемником var. Хотя var все еще дос
       }
     }
 ```
-#### __4.Promises / Асинхронные функции__
+#### __4. Promises/Асинхронные функции__
 Асинхронный характер JavaScript уже давно представляет собой проблему; любой
 нетривиальное приложение рискует попасть в 'ад' обратных вызовов при работе с
 такие вещи, как запросы Ajax.
@@ -65,105 +65,74 @@ ES2017 представил асинхронные функции (иногда 
 };
 
 ```
-#### __5.Объявление переменных__
+#### __5. Имена констант должны быть ЗАГЛАВНЫМИ_БУКВАМИ и через нижнее подчёркивание__
+Для неизменных величин — НЕИЗМЕННО_ПРАВИЛО: всё заглавными, а слова через подчёркивание.
+Если вы абсолютно уверены, что переменная не должна изменяться, вы можете указать ее, написав имя константы. Это подчёркивает неизменность константы, во всём коде.
 ```javascript
-    // bad
-    for (var i = 1; i < 5; i++) {
-      console.log(i);
-    }
-    // <-- logs the numbers 1 to 4
-    console.log(i);
-    // <-- 5 (variable i still exists outside the loop)
-    
-    // good
-    for (let j = 1; j < 5; j++) {
-      console.log(j);
-    }
-    console.log(j);
-    // <-- 'Uncaught ReferenceError: j is not defined'
+    //bad
+    const number = 5;
+
+    //good
+    const NUMBER = 5;
 ```
-#### __6.Объявление переменных__
+#### __6. Не используйте eval()__
+Не используйте eval или функцию (…string) конструктор (кроме загрузчиков кода). Эти функции потенциально опасны и просто не работают в средах CSP.
+На [страничке MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval) для eval() даже есть пометка — “Don’t use eval!”
 ```javascript
-    // bad
-    for (var i = 1; i < 5; i++) {
-      console.log(i);
-    }
-    // <-- logs the numbers 1 to 4
-    console.log(i);
-    // <-- 5 (variable i still exists outside the loop)
-    
-    // good
-    for (let j = 1; j < 5; j++) {
-      console.log(j);
-    }
-    console.log(j);
-    // <-- 'Uncaught ReferenceError: j is not defined'
+    //bad
+    let obj = { a : 20, b : 30};
+    let propName = getPropName(); \\return "a" or "b"
+    eval('var result = obj.' + propName);
+
+    //good
+    let obj = { a : 20, b : 30};
+    let propName = getPropName(); \\return "a" or "b"
+    let result = obj [propName];
 ```
-#### __7.Объявление переменных__
+#### __7. Объекты__
+Для создания объекта используйте фигурные скобки. Не создавайте объекты через конструктор new Object.
 ```javascript
-    // bad
-    for (var i = 1; i < 5; i++) {
-      console.log(i);
-    }
-    // <-- logs the numbers 1 to 4
-    console.log(i);
-    // <-- 5 (variable i still exists outside the loop)
-    
-    // good
-    for (let j = 1; j < 5; j++) {
-      console.log(j);
-    }
-    console.log(j);
-    // <-- 'Uncaught ReferenceError: j is not defined'
+    //bad
+    var item = new Object();
+    //good
+    var item = {};
 ```
-#### __8.Объявление переменных__
+#### __8. Используйте "===" Сравнение__
+Когда вы используете "==", ваши переменные будут преобразованы в типы соответствия.
+Оператор "===" вызывает сравнение значений и типов.
 ```javascript
-    // bad
-    for (var i = 1; i < 5; i++) {
-      console.log(i);
-    }
-    // <-- logs the numbers 1 to 4
-    console.log(i);
-    // <-- 5 (variable i still exists outside the loop)
-    
-    // good
-    for (let j = 1; j < 5; j++) {
-      console.log(j);
-    }
-    console.log(j);
-    // <-- 'Uncaught ReferenceError: j is not defined'
+    //bad
+    0 == ""; // true
+    //good
+    0 === ""; // false
 ```
-#### __9.Объявление переменных__
+#### __9. Использовать значения параметров по умолчанию__
+Когда вы вызываете функцию и забываете передать ей параметр, для отсутствующего аргумента устанавливается значение undefined.
 ```javascript
-    // bad
-    for (var i = 1; i < 5; i++) {
-      console.log(i);
+    //bad
+    function logNumber(num) {      
+      console.log(num);
     }
-    // <-- logs the numbers 1 to 4
-    console.log(i);
-    // <-- 5 (variable i still exists outside the loop)
+    logNumber();
     
-    // good
-    for (let j = 1; j < 5; j++) {
-      console.log(j);
+    //good
+    function logNumber(num = 25) {
+      console.log(num);
     }
-    console.log(j);
-    // <-- 'Uncaught ReferenceError: j is not defined'
+    logNumber();
 ```
-#### __10.Объявление переменных__
+#### __10. Завершите Switches настройками по умолчанию__
+Рекомендуется заканчивать операторы switch значением по умолчанию. Даже если так не кажется.
 ```javascript
-    // bad
-    for (var i = 1; i < 5; i++) {
-      console.log(i);
-    }
-    // <-- logs the numbers 1 to 4
-    console.log(i);
-    // <-- 5 (variable i still exists outside the loop)
-    
-    // good
-    for (let j = 1; j < 5; j++) {
-      console.log(j);
-    }
-    console.log(j);
-    // <-- 'Uncaught ReferenceError: j is not defined'
+    switch(type)
+    {
+      case 1:
+        //something
+      case 2:
+        //something else
+      default:
+        // unknown type! 
+        // there should probably be some error-handling
+        // here, maybe an exception
+}
 ```
